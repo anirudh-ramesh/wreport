@@ -10,7 +10,7 @@ script:
     - docker run -v ${TRAVIS_BUILD_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE uname -a
 
 env:
-    - DOCKER_IMAGE=multiarch/ubuntu-core:armhf-wily
+    - DOCKER_IMAGE=multiarch/centos-7-1611-i386-iso-slim
 
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
