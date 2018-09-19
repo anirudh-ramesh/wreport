@@ -15,6 +15,10 @@ env:
     - DOCKER_IMAGE=fedora:26
     - DOCKER_IMAGE=debian:stable
 
+matrix:
+    - allow_failures:
+        - DOCKER_IMAGE=debian:stable
+
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
 
