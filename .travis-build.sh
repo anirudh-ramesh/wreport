@@ -20,7 +20,8 @@ then
     dnf builddep -y fedora/SPECS/wreport.spec
 elif [[ $image =~ ^debian: ]]
 then
-    apt-get install -y  build-essential fakeroot devscripts
+    apt-get update -y
+    apt-get install -y build-essential fakeroot devscripts
     apt-get build-dep -y debian/control
 fi
 
