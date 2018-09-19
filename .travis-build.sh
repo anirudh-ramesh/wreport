@@ -20,9 +20,10 @@ then
     dnf builddep -y fedora/SPECS/wreport.spec
 elif [[ $image =~ ^debian: ]]
 then
+    sed -i 's,^deb\(.*\),deb\1\ndeb-src\1,g' /etc/apt/sources.list
     apt-get update -y
     apt-get install -y build-essential fakeroot devscripts
-    apt-get build-dep -y debian/control
+    mk-build-deps --install --tool='apt-get -o Debug::pkgProblemResolver=yes --no-install-recommends --yes' debian/control
 fi
 
 
