@@ -5,24 +5,25 @@ image=$1
 
 if [[ $image =~ ^centos: ]]
 then
-    pkgcmd="yum"
-    builddep="yum-builddep"
     sed -i '/^tsflags=/d' /etc/yum.conf
     yum install -y epel-release
     yum install -y @buildsys-build
     yum install -y yum-utils
     yum install -y git
+    yum-builddep -y fedora/SPECS/wreport.spec
 elif [[ $image =~ ^fedora: ]]
 then
-    pkgcmd="dnf"
-    builddep="dnf builddep"
     sed -i '/^tsflags=/d' /etc/dnf/dnf.conf
     dnf install -y @buildsys-build
     dnf install -y 'dnf-command(builddep)'
     dnf install -y git
+    dnf builddep -y fedora/SPECS/wreport.spec
+elif [[ $image =~ ^debian: ]]
+then
+    apt-get install -y  build-essential fakeroot devscripts
+    apt-get build-dep -y debian/control
 fi
 
-$builddep -y fedora/SPECS/wreport.spec
 
 if [[ $image =~ ^fedora: || $image =~ ^centos: ]]
 then
@@ -33,6 +34,9 @@ then
     rpmbuild -ba ~/rpmbuild/SPECS/wreport.spec
     find ~/rpmbuild/{RPMS,SRPMS}/ -name "${pkgname}*rpm" -exec cp -v {} . \;
     # TODO upload ${pkgname}*.rpm to github release on deploy stage
+elif [[ $image =~ ^debian: ]]
+then
+    debuild -b -uc -us
 else
     autoreconf -ifv
     ./configure
