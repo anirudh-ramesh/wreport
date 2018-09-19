@@ -17,7 +17,7 @@ env:
 
 matrix:
     allow_failures:
-        DOCKER_IMAGE=debian:stable
+        - env: DOCKER_IMAGE=debian:stable
 
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
