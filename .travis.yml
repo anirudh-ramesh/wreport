@@ -10,7 +10,7 @@ script:
     - docker run -v ${TRAVIS_BUILD_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE /bin/bash .travis-build.sh ${DOCKER_IMAGE#*/}
 
 env:
-    - DOCKER_IMAGE=multiarch/centos-armhfp
+    - DOCKER_IMAGE=multiarch/centos:armhfp-iso
 
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
