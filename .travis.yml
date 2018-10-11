@@ -6,6 +6,7 @@ services:
     - docker
 
 script:
+    - wget -P centos-armhfp-7 https://github.com/multiarch/qemu-user-static/releases/download/v2.7.0/x86_64_qemu-arm-static.tar.gz
     - wget -P centos-armhfp-7 http://isoredirect.centos.org/altarch/7/isos/armhfp/CentOS-Userland-7-armv7hl-generic-Minimal-1804-sda.raw.xz
     - docker build -t centos-armhfp:7 centos-armhfp-7
     - docker run --rm --privileged multiarch/qemu-user-static:register
