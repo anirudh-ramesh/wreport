@@ -12,12 +12,12 @@ then
     yum install -y @buildsys-build
     yum install -y yum-utils
     yum install -y git
-elif [[ $image =~ fedora ]]
+elif [[ $image =~ ^fedora ]]
 then
     pkgcmd="dnf"
     builddep="dnf builddep"
     sed -i '/^tsflags=/d' /etc/dnf/dnf.conf
-    dnf install -y -v @buildsys-build
+    dnf install -y @buildsys-build
     dnf install -y 'dnf-command(builddep)'
     dnf install -y git
 fi
