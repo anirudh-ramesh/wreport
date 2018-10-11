@@ -3,7 +3,7 @@ set -ex
 
 image=$1
 
-if [[ $image =~ ^centos ]]
+if [[ $image =~ centos ]]
 then
     pkgcmd="yum"
     builddep="yum-builddep"
@@ -12,7 +12,7 @@ then
     yum install -y @buildsys-build
     yum install -y yum-utils
     yum install -y git
-elif [[ $image =~ ^fedora ]]
+elif [[ $image =~ fedora ]]
 then
     pkgcmd="dnf"
     builddep="dnf builddep"
