@@ -6,13 +6,13 @@ services:
     - docker
 
 script:
-    - wget -P centos-armhfp-7 https://github.com/multiarch/qemu-user-static/releases/download/v2.7.0/x86_64_qemu-arm-static.tar.gz
-    - docker build -t centos-armhfp:7 centos-armhfp-7
+    - wget -P fedora-aarch64-28 https://github.com/multiarch/qemu-user-static/releases/download/v2.7.0/x86_64_qemu-arm-static.tar.gz
+    - docker build -t fedora-aarch64:28 fedora-aarch64-28
     - docker run --rm --privileged multiarch/qemu-user-static:register
     - docker run -v ${TRAVIS_BUILD_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE /bin/bash .travis-build.sh ${DOCKER_IMAGE#*/}
 
 env:
-    - DOCKER_IMAGE=centos-armhfp:7
+    - DOCKER_IMAGE=fedora-aarch64:28
 
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
