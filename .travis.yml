@@ -18,7 +18,7 @@ env:
     - DOCKER_IMAGE=multiarch/fedora:25-aarch64
     - DOCKER_IMAGE=multiarch/centos:7-armhfp-iso
     - DOCKER_IMAGE=multiarch/centos:7-aarch-iso
-    - DOCKER_IMAGE=muttiarch/centos:7-i386-iso
+    - DOCKER_IMAGE=multiarch/centos:7-i386-iso
 
 matrix:
     allow_failures:
@@ -26,7 +26,7 @@ matrix:
         - env: DOCKER_IMAGE=multiarch/fedora:25-aarch64
         - env: DOCKER_IMAGE=multiarch/centos:7-armhfp-iso
         - env: DOCKER_IMAGE=multiarch/centos:7-aarch-iso
-        - env: DOCKER_IMAGE=muttiarch/centos:7-i386-iso
+        - env: DOCKER_IMAGE=multiarch/centos:7-i386-iso
 
 before_deploy:
     - openssl aes-256-cbc -K $encrypted_9241d2ed5547_key -iv $encrypted_9241d2ed5547_iv -in .copr.enc -out .copr -d
