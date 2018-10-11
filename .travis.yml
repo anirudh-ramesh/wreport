@@ -7,7 +7,6 @@ services:
 
 script:
     - wget -P centos-armhfp-7 http://isoredirect.centos.org/altarch/7/isos/armhfp/CentOS-Userland-7-armv7hl-generic-Minimal-1804-sda.raw.xz
-    - wget -P centos-armhfp-7 https://fedora.mirror.garr.it/mirrors/fedora/linux/releases/28/Server/armhfp/images/Fedora-Server-armhfp-28-1.1-sda.raw.xz
     - docker build -t centos-armhfp:7 centos-armhfp-7
     - docker run --rm --privileged multiarch/qemu-user-static:register
     - docker run -v ${TRAVIS_BUILD_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE /bin/bash .travis-build.sh ${DOCKER_IMAGE#*/}
