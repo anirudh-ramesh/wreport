@@ -3,7 +3,7 @@ set -ex
 
 image=$1
 
-if [[ $image =~ ^centos: ]]
+if [[ $image =~ ^centos ]]
 then
     pkgcmd="yum"
     builddep="yum-builddep"
