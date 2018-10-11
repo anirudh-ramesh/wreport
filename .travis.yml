@@ -1,5 +1,3 @@
-dist: precise
-
 language: generic
 
 sudo: required
