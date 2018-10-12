@@ -2,6 +2,9 @@ services:
     - docker
 
 test:centos-7-armhfp-iso:
+    image: docker:latest
+    services:
+        - docker:dind
     script:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run -v ${CI_PROJECT_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE /bin/bash .travis-build.sh ${DOCKER_IMAGE#*/}
