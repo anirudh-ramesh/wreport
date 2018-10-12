@@ -3,6 +3,4 @@ test:
         - docker run --rm --privileged multiarch/qemu-user-static:register
         - docker run -v ${CI_PROJECT_DIR}:/root/src/ -w /root/src/ $DOCKER_IMAGE /bin/bash .travis-build.sh ${DOCKER_IMAGE#*/}
     variables:
-        DOCKER_IMAGE=multiarch/centos:7-armhfp-iso
-    script:
-        - "( cd web/logmetarpa ; coverage run --source . manage.py test ; coverage report )"
+        DOCKER_IMAGE: "multiarch/centos:7-armhfp-iso"
