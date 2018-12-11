@@ -211,8 +211,14 @@ public:
     void set(int val) { seti(val); }
     void set(double val) { setd(val); }
     void set(const char* val) { setc(val); }
-    void set(const std::string& val) { setc(val.c_str()); }
+    void set(const std::string& val) { sets(val); }
     void set(const Var& var) { setval(var); setattrs(var); }
+
+    void set_8bit(int val) { seti(val); }
+    void set_8bit(double val) { setd(val); }
+    void set_8bit(const char* val) { setc_8bit(val); }
+    void set_8bit(const std::string& val) { sets_8bit(val); }
+    void set_8bit(const Var& var) { setval(var); setattrs(var); }
     /// @}
 
     /// Unset the value

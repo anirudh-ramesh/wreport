@@ -178,7 +178,8 @@ bool equals(const char* a, const char* b) { return strcmp(a, b) == 0; }
 template<typename Val>
 void assert_var_value_equal(const Var& actual, Val expected)
 {
-    Var vexpected(actual.info(), expected);
+    Var vexpected(actual.info());
+    vexpected.set_8bit(expected);
     if (!actual.value_equals(vexpected))
     {
         std::stringstream ss;
