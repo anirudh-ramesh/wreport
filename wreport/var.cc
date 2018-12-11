@@ -724,7 +724,7 @@ void Var::setval(const Var& src)
     }
     switch (m_info->type)
     {
-        case Vartype::String: assign_c_checked(src.enqc(), m_info->len); break;
+        case Vartype::String: assign_c_8bit(src.enqc(), m_info->len); break;
         case Vartype::Binary: assign_b_checked((uint8_t*)src.enqc(), m_info->len); break;
         case Vartype::Integer:
         case Vartype::Decimal:
