@@ -217,7 +217,7 @@ void Input::decode_string(Var& dest)
     /* Store the variable that we found */
     // Set the variable value
     if (!missing)
-        dest.setc(str);
+        dest.setc_8bit(str);
 }
 
 void Input::decode_binary(Var& dest)
@@ -243,7 +243,7 @@ void Input::decode_binary(Var& dest)
     /* Store the variable that we found */
     // Set the variable value
     if (!missing)
-        dest.setc((char*)buf);
+        dest.setc_8bit((char*)buf);
 }
 
 void Input::decode_number(Var& dest)
@@ -468,7 +468,7 @@ void Input::decode_string(Varinfo info, unsigned subsets, std::function<void(uns
             {
                 /* Compute the value for this subset */
                 //TRACE("datadesc:decode_b_string:decoded[%d] as \"%s\"\n", i, str);
-                var.setc(str);
+                var.setc_8bit(str);
             } else {
                 /* Missing value */
                 //TRACE("datadesc:decode_b_string:decoded[%d] as missing\n", i);
@@ -510,7 +510,7 @@ void Input::decode_string(Var& dest, unsigned subsets)
     if (diffbits == 0)
     {
         if (!missing)
-            dest.setc(str);
+            dest.setc_8bit(str);
     } else {
         /* For compressed strings, the reference value must be all zeros */
         for (size_t i = 0; i < len; ++i)
@@ -528,7 +528,7 @@ void Input::decode_string(Var& dest, unsigned subsets)
         {
             /* Compute the value for this subset */
             //TRACE("datadesc:decode_b_string:decoded[%d] as \"%s\"\n", i, str);
-            dest.setc(str);
+            dest.setc_8bit(str);
         } else {
             /* Missing value */
             //TRACE("datadesc:decode_b_string:decoded[%d] as missing\n", i);
@@ -545,7 +545,7 @@ void Input::decode_string(Var& dest, unsigned subsets)
             {
                 /* Compute the value for this subset */
                 //TRACE("datadesc:decode_b_string:decoded[%d] as \"%s\"\n", i, str);
-                copy.setc(str);
+                copy.setc_8bit(str);
             } else {
                 /* Missing value */
                 //TRACE("datadesc:decode_b_string:decoded[%d] as missing\n", i);
@@ -611,7 +611,9 @@ void Input::decode_string(Varinfo info, unsigned subsets, DispatchToSubsets& des
     else if (diffbits == 0)
     {
         // Add the same string to all the subsets
-        dest.add_same(Var(info, str));
+        Var var(info);
+        var.setc_8bit(str);
+        dest.add_same(var);
     } else {
         /* For compressed strings, the reference value must be all zeros */
         for (size_t i = 0; i < len; ++i)
@@ -630,7 +632,9 @@ void Input::decode_string(Varinfo info, unsigned subsets, DispatchToSubsets& des
             if (decode_string(diffbits * 8, str, len))
             {
                 // Compute the value for this subset
-                dest.add_var(i, Var(info, str));
+                Var var(info);
+                var.setc_8bit(str);
+                dest.add_var(i, std::move(var));
             } else {
                 // Missing value
                 dest.add_var(i, Var(info));
@@ -650,10 +654,9 @@ void Input::decode_compressed_number(Varinfo info, unsigned subsets, DispatchToS
     bool missing = decode_compressed_base(info, base, diffbits);
     if (missing)
         dest.add_missing(info);
-    else if (!diffbits)
+    else if (!diffbits) {
         dest.add_same(Var(info, info->decode_binary(base)));
-    else
-    {
+    } else {
         Var var(info);
         for (unsigned i = 0; i < subsets; ++i)
         {

@@ -59,6 +59,7 @@ protected:
     void assign_d_checked(double val);
     void assign_b_checked(uint8_t* val, unsigned size);
     void assign_c_checked(const char* val, unsigned size);
+    void assign_c_8bit(const char* val, unsigned size);
 
 public:
     /// Create a new Var, with undefined value
@@ -167,11 +168,17 @@ public:
     /// Set the value from a double value
     void setd(double val);
 
-    /// Set the value from a string or opaque binary value
+    /// Set the value from an ASCII string
     void setc(const char* val);
 
     /// Set the value from a string or opaque binary value
+    void setc_8bit(const char* val);
+
+    /// Set the value from an ASCII string
     void sets(const std::string& val);
+
+    /// Set the value from a string or opaque binary value
+    void sets_8bit(const std::string& val);
 
     /// Set from a value formatted with the format() method
     void setf(const char* val);

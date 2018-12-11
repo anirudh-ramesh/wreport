@@ -456,7 +456,35 @@ void Var::assign_b_checked(uint8_t* val, unsigned size)
     m_isset = true;
 }
 
+static inline void strncpy_7bit(char* dst, const char* src, unsigned len)
+{
+    unsigned pos = 0;
+    for (; pos < len; ++pos)
+    {
+        if (src[pos] & 0x80)
+            error_consistency::throwf("string value is not 7-bit clean: %s", src);
+        dst[pos] = src[pos];
+        if (!src[pos]) break;
+    }
+    while (pos < len)
+        dst[pos++] = 0;
+}
+
 void Var::assign_c_checked(const char* val, unsigned size)
+{
+    allocate();
+    if (size < m_info->len)
+    {
+        strncpy_7bit(m_value.c, val, size);
+        m_value.c[size] = 0;
+    } else {
+        strncpy_7bit(m_value.c, val, m_info->len);
+        m_value.c[m_info->len] = 0;
+    }
+    m_isset = true;
+}
+
+void Var::assign_c_8bit(const char* val, unsigned size)
 {
     allocate();
     if (size < m_info->len)
@@ -520,6 +548,24 @@ void Var::setc(const char* val)
     }
 }
 
+void Var::setc_8bit(const char* val)
+{
+    switch (m_info->type)
+    {
+        case Vartype::String: assign_c_8bit(val, m_info->len); break;
+        case Vartype::Binary: assign_b_checked((uint8_t*)val, m_info->len); break;
+        case Vartype::Decimal:
+        case Vartype::Integer:
+            if (!isnumber(val))
+                unset();
+            else if (*val == '-')
+                assign_i_checked(-str_to_unsigned(val + 1));
+            else
+                assign_i_checked(str_to_unsigned(val));
+            break;
+    }
+}
+
 void Var::setc_truncate(const char* val)
 {
     switch (m_info->type)
@@ -540,6 +586,24 @@ void Var::sets(const std::string& val)
     switch (m_info->type)
     {
         case Vartype::String: assign_c_checked(val.c_str(), val.size()); break;
+        case Vartype::Binary: assign_b_checked((uint8_t*)val.c_str(), val.size()); break;
+        case Vartype::Integer:
+        case Vartype::Decimal:
+            if (!isnumber(val.c_str()))
+                unset();
+            else if (val[0] == '-')
+                assign_i_checked(-str_to_unsigned(val.c_str() + 1));
+            else
+                assign_i_checked(str_to_unsigned(val.c_str()));
+            break;
+    }
+}
+
+void Var::sets_8bit(const std::string& val)
+{
+    switch (m_info->type)
+    {
+        case Vartype::String: assign_c_8bit(val.c_str(), val.size()); break;
         case Vartype::Binary: assign_b_checked((uint8_t*)val.c_str(), val.size()); break;
         case Vartype::Integer:
         case Vartype::Decimal:

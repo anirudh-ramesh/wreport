@@ -361,7 +361,8 @@ void UncompressedDecoderTarget::decode_and_add_raw_character_data(Varinfo info)
     // Add as C variable to the subset
 
     // Store the character data
-    Var cdata(info, buf);
+    Var cdata(info);
+    cdata.sets_8bit(buf);
     out.store_variable(cdata);
 
     TRACE("decode_c_data:decoded string %s\n", buf.c_str());
